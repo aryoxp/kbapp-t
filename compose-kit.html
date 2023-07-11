@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta id="core-lang" data-lang="
+      H4sIAAAAAAAAAzWQwU7EMAxEfwX5bPoB3BAgIYEWxNID3LJt2q0ITtS0rBbEv6/HSS+eN6PYjvxHnZPO
+      B7qhuwJMXYjZIzBVH9MZFsLUT9kdgu81ud9Q03iSEJ2lGzJ52Z4+yPbSS/HG8xxnOFOmYZIpHzWowHT0
+      IUQNHk2Z6o7nMh9ukrEGSk3TaCz+pNFOqzK6d2iNw6D4olX5C/gEEpCAkjeGMCWXFxzh1ZRp9j0mvUHg
+      sl/MQpmy+8HjPaS4a5drcHWby7dKy740LG42Zwofk1kVpiWOY8DA9wJMq9j6Vmz9KmVWK2X9mupd2lQv
+      f/ZY/6GV6TfGbzWfkP8Lty/hPfEBAAA=">
+    <meta id="core-client-config" data-collabhost="https://collab.kit-build.net"
+      data-collabport="3000"
+data-core="
+      eyJiYXNldXJsIjoiaHR0cHM6XC9cL2NvbGxhYi5raXQtYnVpbGQubmV0OjgwODBcL2ZpcmFcL2luZGV4
+      LnBocFwvY21hcFwvIiwiYmFzZWZpbGV1cmwiOiJodHRwczpcL1wvY29sbGFiLmtpdC1idWlsZC5uZXQ6
+      ODA4MFwvZmlyYVwvY21hcFwvIiwiYXNzZXR1cmwiOiJodHRwczpcL1wvY29sbGFiLmtpdC1idWlsZC5u
+      ZXQ6ODA4MFwvZmlyYVwvY21hcFwvYXNzZXRcLyIsInNlc3NpZCI6InJtYWN1dTVhc2tuMWc4ZWwybnI3
+      dmNxZGczIn0=">
+    <link rel="stylesheet" href=".asset/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href=".asset/vendor/bootstrap-icons/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href=".asset/vendor/general-ui/g.ui.css">
+    <link rel="stylesheet" href=".asset/vendor/animate.min.css">
+    <link rel="stylesheet" href=".asset/vendor/huebee/huebee.min.css">
+    <link rel="stylesheet" href=".asset/vendor/kitbuild/kbui.css">
+    <link rel="stylesheet" href=".asset/vendor/highlight/default.min.css">
+    <link rel="stylesheet" href="cmap/asset/cmap.css">
+    <link rel="icon" href="favicon.ico">
+    <title>Kit-Build: Compose Kit</title>
+  </head>
+  <body style="background-color: #e9e9e9;">
+<div class="d-flex flex-column vh-100">
+  <span class="position-absolute d-flex align-items-center text-white px-3 text-decoration-none"></span>
+  <div class="app-navbar d-flex p-1 pb-0">
+    <div style="border-radius: 50%; padding: 2px 4px; background-color: #eba000; width: 32px;" class="text-center me-1">
+      <img src="kb.svg" width="16px" height="16px" />
+    </div>
+    <div class="btn-group btn-group-sm">
+      <button class="bt-import btn btn-outline-secondary"><i class="bi bi-arrow-right-short"></i><i class="bi bi-code-square"></i> Import</button>
+      <button class="bt-export btn btn-outline-secondary"><i class="bi bi-send"></i> Export</button>
+    </div>
+    <div class="btn-group btn-group-sm ms-1">
+      <button class="bt-option btn btn-warning text-dark"><i class="bi bi-sliders"></i> Kit Options</button>
+    </div>
+    <div class="btn-group btn-group-sm ms-1">
+      <button class="bt-toggle-left btn btn-sm btn-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Toggle outgoing edges" aria-label="Toggle outgoing edges"><i class="bi bi-box-arrow-up-right"></i></button>
+      <button class="bt-toggle-right btn btn-sm btn-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Toggle incoming edges" aria-label="Toggle incoming edges"><i class="bi bi-box-arrow-in-up-right"></i></button>
+      <button class="bt-remove btn btn-sm btn-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Remove all edges<br>(full decompose)" aria-label="Remove all edges<br>(full decompose)"><i class="bi bi-x-square"></i></button>
+      <button class="bt-restore btn btn-sm btn-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Restore all edges" aria-label="Restore all edges"><i class="bi bi-check2-square"></i></button>
+      <button class="bt-reset btn btn-sm btn-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Reset to goalmap settings"><i class="bi bi-arrow-repeat"></i> Reset</button>
+    </div>
+    <div class="btn-group btn-group-sm ms-1">
+      <button class="bt-save btn btn-primary"><i class="bi bi-save"></i> Save</button>
+      <button class="bt-save-as btn btn-primary"><i class="bi bi-front"></i> Save As...</button>
+      <!-- <button class="bt-export btn btn-primary"><i class="bi bi-send"></i> Export</button> -->
+    </div>  
+    
+  </div>
+  <div class="d-flex flex-fill align-items-stretch p-1">
+    <!-- container of this layout template must have a display: flex style -->
+<!-- or add d-flex Bootstrap class to this layout's container/parent   -->
+<div class="kb-container d-flex flex-fill flex-column border bg-white rounded">
+  <div class="kb-toolbar p-1 d-flex align-items-center justify-content-between bg-light border-bottom">
+    <span class="left-stack"></span>
+    <span class="center-stack"><span class="btn btn-sm">&nbsp;</span></span>
+    <span class="right-stack"></span>
+  </div>
+  <div id="makekit-canvas" class="kb-cy flex-fill"></div>
+</div>  </div>
+  <div class="d-flex">
+    <div class="status-panel flex-fill m-2 mt-0 d-flex"></div>
+    <div class="status-control text-end m-2 mt-0"><button title="&nbsp;" class="btn btn-primary btn-sm opacity-0">&nbsp;</button></div>
+  </div>
+</div>
+
+<div id="concept-map-export-dialog" class="card d-none">
+  <h6 class="card-header"><i class="bi bi-send"></i> Export</h6>
+  <div class="card-body">
+    <textarea class="form-control encoded-data" rows="5"></textarea>
+  </div>
+  <div class="card-footer text-end">
+    <button class="btn btn-sm btn-secondary bt-cancel px-3">Cancel</button>
+    <button class="btn btn-sm btn-primary ms-1 bt-clipboard px-3"><i class="bi bi-clipboard"></i> Copy to Clipboard</button>
+  </div>
+</div>
+
+<div id="concept-map-import-dialog" class="card d-none">
+  <h6 class="card-header"><i class="bi bi-arrow-right-short"></i><i class="bi bi-code-square"></i> Import</h6>
+  <div class="card-body">
+    <textarea class="form-control encoded-data" rows="5"></textarea>
+  </div>
+  <div class="card-footer d-flex text-end">
+    <button class="btn btn-sm btn-secondary bt-cancel px-3">Cancel</button>
+    <span class="flex-fill">&nbsp;</span>
+    <button class="btn btn-sm btn-success bt-paste"><i class="bi bi-clipboard"></i> Paste</button>
+    <button class="btn btn-sm btn-primary ms-1 bt-decode px-3"><i class="bi bi-clipboard"></i> Decode</button>
+  </div>
+</div>
+
+<div id="kit-option-dialog" class="card d-none">
+  <h6 class="card-header"><i class="dialog-icon bi bi-sliders"></i> <span class="dialog-title">Options</span></h6>
+  <div class="card-body px-4">
+    <div class="row mb-3"><div class="col text-primary">
+      Options for Kit-Building activity of using this Kit
+    </div></div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="col-sm-12">
+          <label class="form-label">Feedback given during recomposition.</label>
+        </div>
+        <div class="col-sm-10 mb-3">
+          <select class="form-select form-select-sm" name="feedbacklevel">
+            <option value="0">Level 0 - No Feedback</option>
+            <option value="1">Level 1 - Count Only</option>
+            <option class="default" value="2">Level 2 - Count and Edge Visual</option>
+            <option value="3">Level 3 - Count, Edge Visual, and Expected Edge</option>
+          </select>
+        </div> 
+
+        <div class="col-sm-12 mb-2">  
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" name="modification" id="input-modification">
+            <label class="form-check-label" for="input-modification">Allow modification of concept map after submit.</label>
+          </div>
+        </div>
+        <div class="col-sm-12 mb-2">  
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" name="readcontent" id="input-readcontent">
+            <label class="form-check-label" for="input-readcontent">Allow read topic/kit content.</label>
+          </div>
+        </div>
+        <div class="col-sm-12 mb-2">  
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" name="saveload" id="input-saveload">
+            <label class="form-check-label" for="input-saveload">Allow save and load recomposed concept map.</label>
+          </div>
+        </div>
+        <div class="col-sm-12 mb-2">  
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" name="reset" id="input-reset">
+            <label class="form-check-label" for="input-reset">Allow reset concept map to initial kit.</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="col-sm-12 mb-2">  
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" name="fullfeedback" id="input-fullfeedback">
+            <label class="form-check-label" for="input-fullfeedback">Provide full feedback after submit.</label>
+          </div>
+        </div>
+        <div class="col-sm-12 mb-2">  
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" name="feedbacksave" id="input-feedbacksave">
+            <label class="form-check-label" for="input-feedbacksave">Capture concept map state when feedback is requested.</label>
+          </div>
+        </div>
+        <div class="col-sm-12 mb-2">  
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" name="countfb" id="input-countfb">
+            <label class="form-check-label" for="input-countfb">Show the number of feedback given.</label>
+          </div>
+        </div>
+        <div class="col-sm-12 mb-2">  
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" name="countsubmit" id="input-countsubmit">
+            <label class="form-check-label" for="input-countsubmit">Show the number of submission performed.</label>
+          </div>
+        </div>
+        <div class="col-sm-12 mb-2">  
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" name="log" id="input-log">
+            <label class="form-check-label" for="input-log">Log concept mapping activity of this kit for analysis.</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12 mt-2">
+        <span class="bt-enable-all badge bg-primary rounded-pill px-4" role="button">Enable All</span>
+        <span class="bt-disable-all badge bg-secondary rounded-pill px-4 ms-1" role="button">Disable All</span>
+        <span class="bt-default badge bg-success rounded-pill px-4 ms-1" role="button">Default Settings</button>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer text-end">
+    <button class="btn btn-sm btn-secondary bt-cancel px-3">Cancel</button>
+    <button class="btn btn-sm btn-primary ms-1 bt-apply px-3"><i class="dialog-icon bi bi-check-lg"></i> Apply</button>
+  </div>
+</div>
+
+<div id="content-dialog" class="card d-none">
+  <h6 class="card-header d-flex">
+    <span class="drag-handle flex-fill"><i class="dialog-icon bi bi-file-text"></i> <span class="dialog-title">Content</span></span>
+    <i class="bi bi-x-lg bt-close bt-x" role="button"></i>
+  </h6>
+  <div class="card-body position-relative overflow-hidden overflow-scroll d-flex flex-fill mb-3">
+    <div class="content text-secondary"></div>
+  </div>
+  <div class="card-footer d-flex justify-content-between align-items-center">
+    <span>
+      <span class="bt-scroll-top btn btn-sm ms-1 btn-primary px-3"><i class="bi bi-chevron-bar-up"></i> Back to Top</span>
+      <span class="bt-scroll-more btn btn-sm ms-1 btn-primary px-3"><i class="bi bi-chevron-down"></i> More</span>
+    </span>
+    <span>
+      <button class="btn btn-sm btn-secondary bt-close px-3">Close</button>
+      <button class="btn btn-sm resize-handle pe-0 ps-3"><i class="bi bi-textarea-resize"></i></button>
+    </span>
+  </div>
+</div>
+<!-- Dialog Modal -->
+<div class="modal" id="modal-dialog" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content shadow">
+      <div class="modal-body">
+        <div class="dialog-head">
+          <div class="dialog-title fw-bold"></div>
+          <hr>
+        </div>
+        <div class="dialog-body d-flex align-items-center">
+          <i class="dialog-icon fs-1 me-3 ms-2"></i>
+          <div class="dialog-content" style="font-size:.9rem"></div>
+        </div>
+        <hr>
+        <div class="dialog-foot">
+          <button type="button" class="btn btn-sm btn-secondary bt-negative px-2 mx-2 mb-2">No</button>
+          <button type="button" class="btn btn-sm btn-primary bt-positive px-2 mb-2">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Dialog Modal -->
+<!-- Loading Modal -->
+<div class="modal" id="modal-loading" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="modal-loading text-center text-primary">
+          <div class="animation"></div>
+          <div class="mt-2"><span class="loading-text text-dark"></span></div>
+        </div>
+        <div id="modal-content"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Loading Modal -->
+<!-- SignIn Modal -->
+<!-- <div class="card d-none shadow" id="modal-sign-in" tabindex="-1" aria-hidden="true">
+  <div class="card-body mx-3 text-center">
+    <form name="form-sign-in" autocomplete="off">
+      <h1 class="h3 mb-4 mt-4 fw-normal">Sign in</h1>
+      <div class="form-floating">
+        <input type="text" class="form-control rounded-0 rounded-top" id="input-username" placeholder="Username" autocomplete="new-password" style="margin-bottom: -1px;">
+        <label for="input-username">Username</label>
+      </div>
+      <div class="form-floating">
+        <input type="password" class="form-control rounded-0 rounded-bottom" id="input-password" placeholder="Password" autocomplete="new-password">
+        <label for="input-password">Password</label>
+      </div>
+
+      <div class="checkbox mb-3 mt-2 mx-2">
+        <label> <input type="checkbox" id="input-remember-me" value="remember-me"> Remember me </label>
+      </div>
+      <button class="w-100 btn btn-lg btn-primary bt-sign-in" type="submit">Sign in</button>
+      <div id="sign-in-filter" class="text-center mt-3"></div>
+      <p class="mt-5 mb-3 text-muted">&copy; 2017-2023</p>
+    </form> 
+  </div>
+</div> -->
+<!-- /SignIn Modal -->  </body>
+  <!-- Scripts placed at the end of the document so the pages load faster -->
+  <script type="text/javascript" src="core/asset/vendor/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript" src="core/asset/vendor/pako/pako.min.js"></script>
+  <script type="text/javascript" src="core/asset/js/core-clients.js"></script>
+  <script type="text/javascript" src="core/asset/js/core-runtime.js"></script>
+  <script type="text/javascript" src=".asset/vendor/popper.min.js"></script>
+  <script type="text/javascript" src=".asset/vendor/bootstrap/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="core/asset/js/core-language.js"></script>
+  <script type="text/javascript" src=".asset/vendor/general-ui/g.ui.js"></script>
+  <script type="text/javascript" src=".asset/vendor/cytoscapejs/cytoscape.min.js"></script>
+  <script type="text/javascript" src=".asset/vendor/cytoscapejs/layout-base.js"></script>
+  <script type="text/javascript" src=".asset/vendor/cytoscapejs/cose-base.js"></script>
+  <script type="text/javascript" src=".asset/vendor/cytoscapejs/cytoscape-fcose.js"></script>
+  <script type="text/javascript" src=".asset/vendor/huebee/huebee.pkgd.min.js"></script>
+  <script type="text/javascript" src=".asset/vendor/kitbuild/kbui.js"></script>
+  <script type="text/javascript" src=".asset/vendor/kitbuild/kbui.canvas.style.js"></script>
+  <script type="text/javascript" src=".asset/vendor/kitbuild/kbui.canvas.tool.js"></script>
+  <script type="text/javascript" src=".asset/vendor/kitbuild/kbui.toolbar.js"></script>
+  <script type="text/javascript" src=".asset/vendor/kitbuild/kitbuild.js"></script>
+  <!-- <script type="text/javascript" src=".asset/vendor/kitbuild/analyzer.js"></script> -->
+  <!-- <script type="text/javascript" src=".asset/vendor/kitbuild/logger.js"></script> -->
+  <!-- <script type="text/javascript" src=".asset/vendor/socket.io.min.js"></script> -->
+  <!-- <script type="text/javascript" src=".asset/vendor/kitbuild/kbui.collab.js"></script> -->
+  <script type="text/javascript" src=".asset/vendor/highlight/highlight.min.js"></script>
+  <script type="text/javascript" src=".asset/vendor/showdown.min.js"></script>
+  <script type="text/javascript" src="cmap/asset/makekit.js"></script>
+</html>
