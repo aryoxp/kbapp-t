@@ -224,7 +224,6 @@ class MakeKitApp {
         c.data = JSON.stringify(d);
       });
       // console.log(this.conceptMap, kitdata);
-      // api.saveKit(kitdata);
       $("#concept-map-export-dialog .encoded-data").val(
         `conceptMap=${Core.compress(this.conceptMap)}\r\nkit=${Core.compress(kitdata)}\r\n`
       );

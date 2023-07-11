@@ -14,7 +14,6 @@ const { contextBridge, ipcRenderer, ipcMain } = require('electron')
 contextBridge.exposeInMainWorld('api', {
   loadConceptMap: () => ipcRenderer.invoke('load-concept-map'),
   loadConceptMapResult: (data) => ipcRenderer.on('load-concept-map-result', data),
-  openKit: (data) => ipcRenderer.on('open-kit', data),
   loadKit: () => ipcRenderer.invoke('load-kit'),
   loadKitResult: (data) => ipcRenderer.on('load-kit-result', data),
   saveKit: (conceptMapData) => ipcRenderer.invoke('save-kit', conceptMapData),

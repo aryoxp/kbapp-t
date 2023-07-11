@@ -5,10 +5,8 @@ const { app, dialog, BrowserWindow, ipcMain, electron } = require('electron')
 const path = require('path')
 const fs = require('fs');
 const ini = require('ini');
-// const contextMenu = require('electron-context-menu');
 const pako = require('pako');
 
-// const { dialog } = require('electron')
 var mainWindow;
 var composeKitWindow;
 
@@ -21,20 +19,18 @@ const createWindow = () => {
     height: 718,
     show: false,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, 'preload-cmap.js'),
       spellcheck: true
     },
     autoHideMenuBar: true
   });
 
   // and load the index.html of the app.
-  mainWindow.loadFile('index.html')
+  mainWindow.loadFile('cmap.html')
   mainWindow.webContents.once('did-finish-load', () => {
     // mainWindow.webContents.openDevTools();
     mainWindow.show();
   });
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
 }
 
 const createComposeKitWindow = (data) => {
@@ -58,28 +54,6 @@ const createComposeKitWindow = (data) => {
     // composeKitWindow.webContents.openDevTools();
     composeKitWindow.show();
   });
-
-}
-
-const createKitBuildWindow = (data) => {
-  // Create the browser window.
-  composeKitWindow = new BrowserWindow({
-    width: 1024,
-    height: 1024,
-    webPreferences: {
-      preload: path.join(__dirname, 'preload-kitbuild.js'),
-      spellcheck: true
-    },
-    autoHideMenuBar: true,
-    show: false
-  })
-  composeKitWindow.loadFile('kitbuild.html');
-  composeKitWindow.webContents.once('did-finish-load', () => {
-    // composeKitWindow.webContents.send('open-kit', data);
-    // composeKitWindow.webContents.openDevTools();
-    composeKitWindow.show();
-  });
-
 }
 
 // This method will be called when Electron has finished
@@ -302,25 +276,6 @@ app.on('window-all-closed', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-
-// contextMenu({
-// 	showSaveImageAs: true,
-//   prepend: (defaultActions, parameters, browserWindow) => [
-// 		{
-// 			label: 'Rainbow',
-// 			// Only show it when right-clicking images
-// 			visible: parameters.mediaType === 'image'
-// 		},
-// 		{
-// 			label: 'Search Google for “{selection}”',
-// 			// Only show it when right-clicking text
-// 			visible: parameters.selectionText.trim().length > 0,
-// 			click: () => {
-// 				shell.openExternal(`https://google.com/search?q=${encodeURIComponent(parameters.selectionText)}`);
-// 			}
-// 		}
-// 	]
-// });
 
 function uuidv4() {
   return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>

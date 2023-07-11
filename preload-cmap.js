@@ -12,7 +12,6 @@ window.addEventListener('DOMContentLoaded', () => {
 const { contextBridge, ipcRenderer, ipcMain } = require('electron')
 
 contextBridge.exposeInMainWorld('api', {
-  handleContent: (callback) => ipcRenderer.on('send-content', callback),
   saveFileAs: (data) => ipcRenderer.invoke('save-file-as', data).then(result => {}),
   saveFileAsCancelled: (callback) => ipcRenderer.on('save-file-as-cancelled', callback),
   saveFileAsResult: (callback) => ipcRenderer.on('save-file-as-result', callback),
