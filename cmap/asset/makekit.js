@@ -264,21 +264,26 @@ class MakeKitApp {
       try {
         data = MakeKitApp.parseIni(data);
         let conceptMap = Core.decompress(data.conceptMap.replaceAll('"',''));
-        if (data === undefined) {
+        if (data.kit === undefined) {
+          UI.warning("This concept map has no kit, teacher concept map is displayed.").show();
           this.showConceptMap(conceptMap);
           return;
         }
-        let kit = Core.decompress(data.kit.replaceAll('"',''));
-        kit.canvas.conceptMap = this.conceptMap.canvas;
-        let cyData = KitBuildUI.composeKitMap(kit.canvas);
-        this.canvas.cy.elements().remove();
-        this.canvas.cy.add(cyData);
-        this.canvas.applyElementStyle()
-        this.canvas.toolbar.tools.get(KitBuildToolbar.CAMERA).fit(null, {duration: 0})
-        KitBuildUI.showBackgroundImage(this.canvas);
-        CDM.option = kit.map.options;
+        if (data.kit) {
+          let kit = Core.decompress(data.kit.replaceAll('"',''));
+          kit.canvas.conceptMap = this.conceptMap.canvas;
+          let cyData = KitBuildUI.composeKitMap(kit.canvas);
+          this.canvas.cy.elements().remove();
+          this.canvas.cy.add(cyData);
+          this.canvas.applyElementStyle()
+          this.canvas.toolbar.tools.get(KitBuildToolbar.CAMERA).fit(null, {duration: 0})
+          KitBuildUI.showBackgroundImage(this.canvas);
+          CDM.option = kit.map.options;
+          UI.success('Kit data exists and successfully loaded.').show();
+        }
         importDialog.hide();
       } catch(e) {
+        console.error(e);
         UI.errorDialog("Invalid import data.").show();
       }     
     });
@@ -506,6 +511,7 @@ class MakeKitApp {
       this.canvas.toolbar.tools.get(KitBuildToolbar.CAMERA).fit(null, {duration: 0});
       KitBuildUI.showBackgroundImage(this.canvas);
       CDM.option = kit.map.options;
+      UI.success('Kit data exists and successfully loaded.').show();
     });
   
   }
@@ -530,7 +536,8 @@ class MakeKitApp {
       .get(KitBuildToolbar.CAMERA)
       .fit(null, { duration: 0 });
     this.canvas.canvasTool.clearCanvas().clearIndicatorCanvas();
-    UI.success("Concept map loaded.").show();
+    KitBuildUI.showBackgroundImage(this.canvas);
+    UI.success("No kit data exists in file.<br>Teacher concept map is displayed.").show();
   }
 
 }

@@ -97,6 +97,7 @@ class CmapApp {
       let proceed = () => {
         this.canvas.reset();
         CmapApp.inst.setConceptMap(null);
+        this.fileName = undefined;
         UI.info("Canvas has been reset").show();
         L.log(
           "reset-concept-map",

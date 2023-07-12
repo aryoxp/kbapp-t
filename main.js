@@ -108,7 +108,10 @@ app.whenReady().then(() => {
     
     if(!filePath) {
       filePath = dialog.showSaveDialogSync(BrowserWindow.getFocusedWindow(), {
-        defaultPath: 'temp.cmap'
+        defaultPath: 'new.cmap',
+        filters: [{
+          extensions: ['cmap']
+        }],
       });
       if (filePath === undefined) {
         event.sender.send(('save-file-as-cancelled'), true);
@@ -209,7 +212,10 @@ app.whenReady().then(() => {
     let d = ini.parse(fs.readFileSync(this.fileName, { encoding: 'utf-8'}));
     d.kit = compress(data);    
     let { canceled, filePath } = await dialog.showSaveDialog(BrowserWindow.getFocusedWindow(), {
-      defaultPath: 'kit-new.cmap'
+      defaultPath: 'kit-new.cmap',
+      filters: [{
+        extensions: ['cmap']
+      }],
     });
     if (canceled) {
       return {
@@ -248,7 +254,10 @@ app.whenReady().then(() => {
   ipcMain.handle('save-lmap', async (event, cmap, kit, lmap) => {
     // console.log(cmap, kit, lmap);
     let { canceled, filePath } = await dialog.showSaveDialog(BrowserWindow.getFocusedWindow(), {
-      defaultPath: 'student.lmap'
+      defaultPath: 'student.lmap',
+      filters: [{
+        extensions: ['lmap']
+      }],
     });
     if (canceled) {
       return {
