@@ -239,6 +239,16 @@ class CmapApp {
         .show();
     });
 
+    /**
+     * 
+     * Data Generator: for Gakuto
+     * 
+     **/
+
+    $(".app-navbar").on("click", ".bt-data-gen", () => {
+      api.openDataGenerator();
+    });
+
     /*
     *
     * Electron API

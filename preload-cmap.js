@@ -22,4 +22,5 @@ contextBridge.exposeInMainWorld('api', {
   openFileCancelled: (callback) => ipcRenderer.on('open-file-cancelled', callback),
   composeKit: (data) => ipcRenderer.invoke('compose-kit', data),
   openImage: () => ipcRenderer.invoke('open-image'),
+  openDataGenerator: () => ipcRenderer.invoke('open-data-generator'),
 });

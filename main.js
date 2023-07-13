@@ -9,6 +9,7 @@ const pako = require('pako');
 
 var mainWindow;
 var composeKitWindow;
+var dataGenWindow;
 
 var file;
 
@@ -56,6 +57,28 @@ const createComposeKitWindow = (data) => {
   });
 }
 
+const createDataGeneratorWindow = () => {
+  dataGenWindow = new BrowserWindow({
+    width: 800,
+    height: 418,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload-data-gen.js'),
+      spellcheck: true
+    },
+    autoHideMenuBar: true,
+    show: false,
+    parent: mainWindow, 
+    modal: true 
+  });
+  let pos = mainWindow.getPosition();
+  dataGenWindow.loadFile('data-gen.html');
+  dataGenWindow.setPosition(pos[0] + 25, pos[1] + 50);
+  dataGenWindow.webContents.once('did-finish-load', () => {
+    // dataGenWindow.webContents.openDevTools();
+    dataGenWindow.show();
+  });
+}
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
@@ -100,6 +123,8 @@ app.whenReady().then(() => {
   }
 
   ipcMain.handle('open-image', handleOpenImage);
+
+  ipcMain.handle('open-data-generator', createDataGeneratorWindow);
 
   var saveFile = function (event, data, options) {
     options = Object.assign({silent: false}, options);
@@ -272,6 +297,54 @@ app.whenReady().then(() => {
       lmap: compress(lmap)
     }
     return await saveLearnemapAs(filePath, d);
+  });
+
+  /**
+   * 
+   * Data Generator
+   * 
+   **/
+
+  async function handleReadFile(event, filePath) {
+    return fs.readFileSync(filePath, { encoding: 'utf-8'});
+  }
+
+  ipcMain.handle('add-file', async (event) => {
+    let filePath = dialog.showOpenDialogSync({
+      filters: [{
+        name: 'Kit-Build concept map with kit file',
+        extensions: ['cmap']
+      }]
+    });
+    if (filePath == undefined) return;
+    return filePath[0];
+  });
+  ipcMain.handle('read-file', handleReadFile);
+  ipcMain.handle('gen-cmap-data', async (event, cmapFiles) => {
+    // console.log(cmapFiles);
+    let content = `var MAPS = new Map();\n`;
+    for(let f of cmapFiles) {
+      cmapdata = fs.readFileSync(f.filepath, {encoding: 'utf-8'});
+      content += `MAPS.set('${f.mapid}', \`\n${cmapdata.trim()}\n\`);\n`;
+    }
+    const {canceled, filePath} = await dialog.showSaveDialog({
+      defaultPath: 'cmap.data.js',
+      filters: [{
+        name: 'Kit-Build Digital Book Concept Map Data',
+        extensions: ['js']
+      }]
+    });
+    if (canceled) {
+      return {
+        result: false,
+        reason: 'cancelled'
+      };
+    }
+    fs.writeFileSync(filePath, content);
+    return {
+      result: true,
+      filePath: filePath
+    };
   });
 
 })
