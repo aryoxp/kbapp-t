@@ -253,7 +253,14 @@ class Core {
   }
 
   static compress(data) { // encoded to base64 encoding
-    return btoa(String.fromCharCode.apply(null, pako.gzip(JSON.stringify(data), {to: 'string'})))
+    let zip = pako.gzip(JSON.stringify(data));
+    var binary = '';
+    var bytes = new Uint8Array( zip );
+    var len = bytes.byteLength;
+    for (var i = 0; i < len; i++) {
+        binary += String.fromCharCode( bytes[ i ] );
+    }
+    return window.btoa( binary );
   }
 
   static decompress(data) { // decoded from base64 encoding

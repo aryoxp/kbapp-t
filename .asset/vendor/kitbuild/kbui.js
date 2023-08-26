@@ -166,6 +166,9 @@ class KitBuildCanvas {
       case KitBuildCanvasTool.IMAGE:
         this.canvasTool.addTool(what, new KitBuildImageTool(this, settings))
         break;
+      case KitBuildCanvasTool.REMOVE_IMAGE:
+        this.canvasTool.addTool(what, new KitBuildRemoveImageTool(this, settings))
+        break;        
       case KitBuildCanvasTool.LOCK:
         this.canvasTool.addTool(what, new KitBuildLockTool(this, settings))
         break;
@@ -1554,6 +1557,26 @@ class KitBuildUI {
     n.style('text-margin-y', `10px`);
     n.style('text-background-color', `#FFF`);
     n.data('image', base64);
+  }
+
+  static removeNodeBackgroundImage(n, canvas) {
+    if (!canvas) return;
+    let no = Object.assign({
+      id: 0,
+      label: n.data('label'),
+      type: n.data('type')
+    });
+    canvas.createNode(no).then(node => {
+      // console.log(node.data());
+      n.data('width', node.data('width'));
+      n.data('height', node.data('height'));
+      canvas.cy.remove(`#${node.id()}`);
+    });
+    n.style('background-image', `none`);
+    n.style('background-fit', `none`);
+    n.style('text-valign', `center`);
+    n.style('text-margin-y', `0px`);
+    n.removeData('image');
   }
 
 }

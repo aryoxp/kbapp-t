@@ -34,6 +34,7 @@ class CmapApp {
     canvas.addCanvasTool(KitBuildCanvasTool.CREATE_CONCEPT);
     canvas.addCanvasTool(KitBuildCanvasTool.CREATE_LINK);
     canvas.addCanvasTool(KitBuildCanvasTool.IMAGE);
+    canvas.addCanvasTool(KitBuildCanvasTool.REMOVE_IMAGE);
     canvas.addCanvasTool(KitBuildCanvasTool.LOCK); // also UNLOCK toggle
 
     canvas.addCanvasMultiTool(KitBuildCanvasTool.DELETE);

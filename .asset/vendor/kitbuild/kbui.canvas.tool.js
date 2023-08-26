@@ -75,7 +75,15 @@ class KitBuildCanvasTool {
     return what & this.settings.showOn;
   }
 
+  _showOn(what) {
+    return what & this.settings.showOn;
+  }
+
   showOnMulti(concepts, edges) {
+    return true;
+  }
+
+  _showOnMulti() {
     return true;
   }
 
@@ -127,6 +135,7 @@ KitBuildCanvasTool.FOCUS          = "focus";
 KitBuildCanvasTool.PROPOSITION    = "proposition";
 KitBuildCanvasTool.PROPAUTHOR     = "propauthor";
 KitBuildCanvasTool.IMAGE          = "image";
+KitBuildCanvasTool.REMOVE_IMAGE   = "remove-image";
 
 KitBuildCanvasTool.SH_NONE        = 0;
 KitBuildCanvasTool.SH_CONCEPT     = 1;
@@ -315,6 +324,8 @@ class KitBuildDuplicateTool extends KitBuildCanvasTool {
     // console.warn(duplicate)
     let duplicateNode = this.canvas.cy.add(duplicate).removeData("lock");
     this.canvas.applyElementStyle();
+    if (duplicateNode.data('image'))
+      KitBuildUI.showNodeBackgroundImage(duplicateNode, duplicateNode.data('image'));
     let newPos = this.canvas.toolbar.tools
       .get(KitBuildToolbar.NODE_CREATE)
       .placement(duplicateNode);
@@ -336,6 +347,8 @@ class KitBuildDuplicateTool extends KitBuildCanvasTool {
           redo: (canvas, data) => {
             this.canvas.cy.add(data);
             this.canvas.applyElementStyle();
+            if (duplicateNode.data('image'))
+              KitBuildUI.showNodeBackgroundImage(duplicateNode, duplicateNode.data('image'));      
           },
         });
     }, 50);
@@ -1114,6 +1127,38 @@ class KitBuildImageTool extends KitBuildCanvasTool {
     let base64 = await api.openImage();
     if (base64 != undefined)
       KitBuildUI.showNodeBackgroundImage(nodes[0], base64);
+    return;
+  }
+}
+
+class KitBuildRemoveImageTool extends KitBuildCanvasTool {
+  constructor(canvas, options) {
+    super(
+      canvas,
+      Object.assign(
+        {
+          showOn: KitBuildCanvasTool.SH_CONCEPT,
+          color: "#b61111",
+          icon: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bezier" viewBox="-4 -4 24 24"><path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/><path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"/></svg>',
+          gridPos: { x: 0, y: -2 },
+        },
+        options
+      )
+    );
+    this.contextPosition = { x: 0, y: 0 };
+    this.contextRenderedPosition = { x: 0, y: 0 };
+  }
+
+  showOn(what, node) {
+    // console.warn(node, node ? node.data() : undefined);
+    if (node)
+      return this._showOn(what) && node.data('image');
+    return this._showOn(what, node);
+  }
+
+  async action(event, e, nodes) {
+    if (nodes[0] && this.canvas)
+      KitBuildUI.removeNodeBackgroundImage(nodes[0], this.canvas);
     return;
   }
 }
