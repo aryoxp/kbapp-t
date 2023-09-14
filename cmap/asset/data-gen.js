@@ -5,13 +5,58 @@ $(() => {
   }
 
   Generator.processContent = (f, content) => {
+    let ct = Generator.parseIni(content);
+    ct.conceptMap = ct.conceptMap ? ct.conceptMap.replace(/['"]+/g, '') : null;
+    ct.kit = ct.kit ? ct.kit.replace(/['"]+/g, '') : null;
+    let cmapvalid = false;
+    let kitvalid = false;
+    try {
+      let cmap = Core.decompress(ct.conceptMap);
+      cmapvalid = true;
+    } catch (e) {}
+    try {  
+      let kit = Core.decompress(ct.kit);
+      kitvalid = true;
+    } catch (e) {}
     let row = `<div class="d-flex align-items-center m-2 item-cmap" data-filepath="${f.path}">`
       + `<span class="item-id bt-mapid btn btn-sm btn-primary ms-2" style="min-width:100px;">NO-ID</span>`
+      + (cmapvalid ? "" : `<small class="text-danger ms-2"><i class="bi bi-exclamation-triangle"></i> Concept map data is Invalid.</small>`)
+      + (kitvalid ? "" : `<small class="text-danger ms-2"><i class="bi bi-exclamation-triangle"></i> Concept map has no kit defined or kit data is Invalid.</small>`)
       + `<small class="ms-2 text-small text-sm">${f.path.length < 30 ? f.path : "..." + f.path.substring(f.path.length-30,f.path.length)}</small>`
       + `<code class="code ms-2">${content.substring(0, 30)}...</code>`
       + `<span class="btn bt-delete btn-sm btn-danger ms-2"><i class="bi bi-x-lg"></i></span>`
       + '</div>';
     $('#data-container').append(row);
+  }
+
+  Generator.parseIni = (data) => {
+    var regex = {
+      section: /^\s*\[\s*([^\]]*)\s*\]\s*$/,
+      param: /^\s*([^=]+?)\s*=\s*(.*?)\s*$/,
+      comment: /^\s*;.*$/
+    };
+    var value = {};
+    var lines = data.split(/[\r\n]+/);
+    var section = null;
+    lines.forEach(function(line){
+      if(regex.comment.test(line)){
+        return;
+      }else if(regex.param.test(line)){
+        var match = line.match(regex.param);
+        if(section){
+          value[section][match[1]] = match[2];
+        }else{
+          value[match[1]] = match[2];
+        }
+      }else if(regex.section.test(line)){
+        var match = line.match(regex.section);
+        value[match[1]] = {};
+        section = match[1];
+      }else if(line.length == 0 && section){
+        section = null;
+      };
+    });
+    return value;
   }
 
   let mapIdDialog = UI.modal('#mapid-dialog', {

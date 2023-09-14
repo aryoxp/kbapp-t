@@ -29,7 +29,7 @@ class KitBuildCanvasKonva {
     var tr = new Konva.Transformer({
       rotateEnabled: false,
       boundBoxFunc: function (oldBoundBox, newBoundBox) {
-        if (newBoundBox.width < 100 || newBoundBox.height < 25) {
+        if (newBoundBox.width < 50 || newBoundBox.height < 50) {
           return oldBoundBox;
         }
         return newBoundBox;

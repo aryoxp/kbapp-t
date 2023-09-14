@@ -632,22 +632,46 @@ class KitBuildUI {
     this.canvases = new Map()
     if (canvasId)
       this.canvases.set(canvasId, KitBuildCanvas.instance(canvasId, options));
-    UI.addListener((evt, data) => { // console.error("UI EVENT", evt, data)
+    UI.addListener((evt, data) => { console.error("UI EVENT", evt, data)
       switch(evt) {
         case "window-resize":
         case "sidebar-toggle":
         case "toolbar-render":
-          this.canvases.forEach(canvas => {
-            // console.error(evt, canvas.cy)
-            $(`#${canvasId} > div`).css('height', 0).css('width', 0)
+          setTimeout(() => {
+            this.canvases.forEach(canvas => {
+              // console.error(evt, canvas.cy)
+              $(`#${canvasId} > div`).css('height', 0).css('width', 0);
+              setTimeout(() => {
+                $(`#${canvasId} > div`)
+                  .css('height', $(`#${canvasId}`).height() | 0)
+                  .css('width', $(`#${canvasId}`).width() | 0);
+                $(`#${canvasId} > canvas`)
+                  .css('height', $(`#${canvasId}`).height() | 0)
+                  .css('width', $(`#${canvasId}`).width() | 0);
+              }, 5) 
+              // canvas.cy.resize()
+              // canvas.cy.forceRender()
+            });
+            
+            // $(`.konvajs-content`).css('height', 0).css('width', 0);
             setTimeout(() => {
-              $(`#${canvasId} > div`)
-                .css('height', $(`#${canvasId}`).height() | 0)
-                .css('width', $(`#${canvasId}`).width() | 0)
-            }, 5) 
-            // canvas.cy.resize()
-            // canvas.cy.forceRender()
-          })
+              try {
+                // console.log(canvasId, $(`#${canvasId}`).width(), $(`#${canvasId}`).height());
+                $('.konvajs-content')
+                  .css('width', $(`#${canvasId}`).width() | 0)
+                  .css('height', $(`#${canvasId}`).height() | 0)
+                $('.konvajs-content > canvas')
+                  .attr('width', $(`#${canvasId}`).width() | 0)
+                  .attr('height', $(`#${canvasId}`).height() | 0)
+                  .css('height', $(`#${canvasId}`).height() | 0)
+                  .css('width', $(`#${canvasId}`).width() | 0)
+                KitBuildCanvasKonva.instance.stage.height($(`#${canvasId}`).height());
+                KitBuildCanvasKonva.instance.stage.width($(`#${canvasId}`).width());
+                // console.log(KitBuildCanvasKonva.instance.stage.height(), $(`#${canvasId}`).height());
+              } catch(e) {}
+            }, 10); 
+          }, 100);
+          
           break;
       }
     })    
